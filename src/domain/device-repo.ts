@@ -5,7 +5,7 @@ import { Device } from './device';
  * Implementations should map these methods to whatever backing store is used
  * (in-memory, database, external service, etc.).
  */
-export interface ProductRepo {
+export interface DeviceRepo {
   /**
    * Fetch a product by id. Returns null if not found.
    */
