@@ -3,20 +3,20 @@ import { Device } from '../domain/device';
 export const testDevices: Device[] = [
   {
     id: 'device-001',
-    name: 'Smart Thermostat',
-    description: 'Energy-efficient thermostat with Wi-Fi connectivity.',
-    totalQuantity: 50,
+    name: 'Ipad',
+    description: 'Ipad for studnets.',
+    totalQuantity: 70,
   },
   {
     id: 'device-002',
-    name: 'Wireless Door Sensor',
-    description: 'Compact sensor for monitoring door open/close state.',
+    name: 'Dell laptop',
+    description: 'Laptop for using software .',
     totalQuantity: 200,
   },
   {
     id: 'device-003',
-    name: 'LED Light Bulb',
-    description: 'Long-life LED bulb with adjustable brightness.',
-    totalQuantity: 1000,
+    name: 'Camera',
+    description: 'For students who want to document the uni.',
+    totalQuantity: 10,
   },
 ];

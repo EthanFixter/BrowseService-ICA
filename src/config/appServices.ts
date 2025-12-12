@@ -3,10 +3,10 @@ import { DeviceRepo } from '../domain/device-repo';
 import { CosmosDeviceRepo } from '../infra/cosmos-device-repo';
 
 const COSMOS_OPTIONS = {
-  endpoint: 'https://browseservice-dev-efix08-cosmos.documents.azure.com:443/',
-  databaseId: 'Devicecatalogue-db',
-  containerId: 'devices',
+  endpoint: process.env.COSMOS_ENDPOINT,
   key: process.env.COSMOS_KEY,
+  databaseId: process.env.COSMOS_DATABASE,
+  containerId: process.env.COSMOS_CONTAINER,
 };
 
 let cachedDeviceRepo: DeviceRepo | null = null;
