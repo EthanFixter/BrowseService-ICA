@@ -1,11 +1,32 @@
-import { app, HttpRequest, HttpResponseInit } from '@azure/functions';
+import {
+  app,
+  HttpRequest,
+  HttpResponseInit,
+  InvocationContext,
+} from '@azure/functions';
 import { listDevices } from '../app/list-devices';
 import { createListDevicesDeps } from '../config/appServices';
 
+// ✅ CORS headers helper
+const getCorsHeaders = () => ({
+  'Access-Control-Allow-Origin': '*', // or restrict to http://localhost:5173 if you prefer
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+});
+
 const listDevicesHandler = async (
-  _request: HttpRequest
+  request: HttpRequest,
+  context: InvocationContext
 ): Promise<HttpResponseInit> => {
   try {
+    // Handle preflight CORS request
+    if (request.method === 'OPTIONS') {
+      return {
+        status: 204,
+        headers: getCorsHeaders(),
+      };
+    }
+
     // Read Cosmos DB environment variables with fallback names
     const COSMOS_ENDPOINT = process.env.COSMOS_ENDPOINT;
     const COSMOS_KEY = process.env.COSMOS_KEY;
@@ -25,18 +46,22 @@ const listDevicesHandler = async (
       const msg = `Missing required Cosmos DB configuration: ${missing.join(
         ', '
       )}`;
-      console.error(msg);
+      context.error(msg);
       return {
         status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+          ...getCorsHeaders(),
+        },
         jsonBody: { success: false, message: msg },
       };
     }
 
     // Log variables (without printing the key)
-    console.log('COSMOS_ENDPOINT:', COSMOS_ENDPOINT);
-    console.log('COSMOS_KEY:', COSMOS_KEY ? 'present' : 'missing');
-    console.log('COSMOS_DATABASE:', COSMOS_DATABASE);
-    console.log('COSMOS_CONTAINER:', COSMOS_CONTAINER);
+    context.log('COSMOS_ENDPOINT:', COSMOS_ENDPOINT);
+    context.log('COSMOS_KEY:', COSMOS_KEY ? 'present' : 'missing');
+    context.log('COSMOS_DATABASE:', COSMOS_DATABASE);
+    context.log('COSMOS_CONTAINER:', COSMOS_CONTAINER);
 
     // Create dependencies and call listDevices
     const deps = createListDevicesDeps();
@@ -45,6 +70,10 @@ const listDevicesHandler = async (
     if (!result.success) {
       return {
         status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+          ...getCorsHeaders(),
+        },
         jsonBody: {
           success: false,
           message: 'Failed to list devices',
@@ -56,12 +85,20 @@ const listDevicesHandler = async (
     const devices = result.data ?? [];
     return {
       status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        ...getCorsHeaders(),
+      },
       jsonBody: devices.map((device) => ({ ...device })),
     };
   } catch (err) {
-    console.error('Unexpected error in listDevicesHttp:', err);
+    context.error('Unexpected error in listDevicesHttp:', err);
     return {
       status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        ...getCorsHeaders(),
+      },
       jsonBody: {
         success: false,
         message: 'Unexpected error',
@@ -73,7 +110,7 @@ const listDevicesHandler = async (
 
 // Register the function
 app.http('listDevicesHttp', {
-  methods: ['GET'],
+  methods: ['GET', 'OPTIONS'], // ✅ include OPTIONS for preflight
   authLevel: 'anonymous',
   route: 'devices',
   handler: listDevicesHandler,
