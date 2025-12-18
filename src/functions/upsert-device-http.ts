@@ -14,9 +14,6 @@ const getCorsHeaders = () => ({
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 });
 
-const testing workflow fails= ;
-
-
 const upsertDeviceHandler = async (
   request: HttpRequest,
   context: InvocationContext
