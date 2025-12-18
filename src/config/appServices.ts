@@ -1,4 +1,5 @@
 import { ListDevicesDeps } from '../app/list-devices';
+import { UpsertDeviceDeps } from '../app/upsert-device';
 import { DeviceRepo } from '../domain/device-repo';
 import { CosmosDeviceRepo } from '../infra/cosmos-device-repo';
 
@@ -22,6 +23,13 @@ export const getDeviceRepo = (): DeviceRepo => {
   return cachedDeviceRepo;
 };
 
+/**
+ * Dependency factories
+ */
 export const createListDevicesDeps = (): ListDevicesDeps => ({
+  deviceRepo: getDeviceRepo(),
+});
+
+export const createUpsertDeviceDeps = (): UpsertDeviceDeps => ({
   deviceRepo: getDeviceRepo(),
 });
