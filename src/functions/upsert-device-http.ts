@@ -114,8 +114,8 @@ const upsertDeviceHandler = async (
 
 // Register the function
 app.http('upsertDeviceHttp', {
-  methods: ['PUT', 'POST', 'OPTIONS'], // ✅ include OPTIONS for preflight
+  methods: ['PUT', 'POST'], // ✅ include OPTIONS for preflight
   authLevel: 'anonymous',
-  route: 'devices',
+  route: 'devices/upsert',
   handler: upsertDeviceHandler,
 });

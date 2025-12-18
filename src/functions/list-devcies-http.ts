@@ -110,7 +110,7 @@ const listDevicesHandler = async (
 
 // Register the function
 app.http('listDevicesHttp', {
-  methods: ['GET', 'OPTIONS'], // ✅ include OPTIONS for preflight
+  methods: ['GET'], // ✅ include OPTIONS for preflight
   authLevel: 'anonymous',
   route: 'devices',
   handler: listDevicesHandler,
