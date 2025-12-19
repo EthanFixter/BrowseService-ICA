@@ -19,4 +19,10 @@ export const testDevices: Device[] = [
     description: 'For students who want to document the uni.',
     totalQuantity: 10,
   },
+  {
+    id: 'device-004',
+    name: 'Projector',
+    description: 'Portable projector for presentations.',
+    totalQuantity: 15,
+  },
 ];
