@@ -1,5 +1,5 @@
 import { getDeviceRepo } from '../config/appServices';
-import { testDevices } from './test-devcies';
+import { testDevices } from './test-devices';
 
 async function main(): Promise<void> {
   const repo = getDeviceRepo();
