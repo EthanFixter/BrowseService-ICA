@@ -18,9 +18,10 @@
     "@azure/identity": "^4.13.0"
   },
   "devDependencies": {
-    "@types/node": "18.x",
+    "@types/node": "^20.19.27",
     "azure-functions-core-tools": "^4.x",
     "rimraf": "^5.0.0",
-    "typescript": "^4.0.0"
+    "typescript": "^4.0.0",
+    "vitest": "^4.0.16"
   }
 }
