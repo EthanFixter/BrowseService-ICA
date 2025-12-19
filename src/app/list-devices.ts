@@ -9,6 +9,7 @@ export type ListDevicesResult = {
   success: boolean;
   data?: Device[];
   error?: string;
+  deployedVersion?: string; // ✅ added to the type
 };
 
 /**
@@ -23,7 +24,11 @@ export async function listDevices(
 
   try {
     const devices = await deviceRepo.list();
-    return { success: true, data: devices };
+    return {
+      success: true,
+      data: devices,
+      deployedVersion: 'v2', // ✅ visible change for deployment verification
+    };
   } catch (error) {
     return { success: false, error: (error as Error).message };
   }
