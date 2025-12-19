@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { listDevices } from './list-devices';
 import { FakeDeviceRepo } from '../infra/fake-device-repo';
 import { Device } from '../domain/device';
+import { DeviceRepo } from '../domain/device-repo';
 
 describe('listDevices', () => {
   it('returns an empty array when no devices exist', async () => {
@@ -47,10 +48,13 @@ describe('listDevices', () => {
   describe('error scenarios', () => {
     it('returns an error when the repository throws', async () => {
       // Arrange
-      const deviceRepo = {
+      const deviceRepo: DeviceRepo = {
         list: () => {
           throw new Error('Repo failure');
         },
+        getById: async () => null,
+        save: async (device) => device,
+        delete: async () => {},
       };
 
       // Act

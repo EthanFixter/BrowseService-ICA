@@ -19,14 +19,29 @@ describe('createDevice', () => {
       expect(device).toEqual(params);
     });
 
-    // TODO: Additional valid creation tests can be added here
+    // ✅ Additional valid creation test
+    it('creates a device when totalQuantity is zero', () => {
+      // Arrange
+      const params = {
+        id: 'dev-000',
+        name: 'Zero Quantity Device',
+        totalQuantity: 0,
+        description: 'Device with zero quantity',
+      };
+
+      // Act
+      const device = createDevice(params);
+
+      // Assert
+      expect(device).toEqual(params);
+    });
   });
 
   describe('id validation', () => {
     it('throws DeviceError when id is only whitespace', () => {
       // Arrange
       const params = {
-        id: 'dev-1234',
+        id: '',
         name: 'Test Device',
         totalQuantity: 5,
         description: 'A test device',
@@ -39,6 +54,21 @@ describe('createDevice', () => {
       expect(act).toThrow(DeviceError);
     });
 
-    // TODO: Additional validation tests can be added here
+    // ✅ Additional validation test
+    it('throws DeviceError when totalQuantity is negative', () => {
+      // Arrange
+      const params = {
+        id: 'dev-neg',
+        name: 'Invalid Device',
+        totalQuantity: -5,
+        description: 'Negative quantity should not be allowed',
+      };
+
+      // Act
+      const act = () => createDevice(params);
+
+      // Assert
+      expect(act).toThrow(DeviceError);
+    });
   });
 });

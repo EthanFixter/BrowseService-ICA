@@ -29,3 +29,9 @@ jobs:
 
       - name: Build (into ./dist)
         run: npm run build
+
+      - name: Run unit tests
+        run: npm run test
+
+      - name: Run coverage report (optional)
+        run: npm run test:coverage
