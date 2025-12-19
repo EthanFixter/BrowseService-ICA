@@ -33,5 +33,5 @@ jobs:
       - name: Run unit tests
         run: npm run test
 
-      - name: Run coverage report (optional)
-        run: npm run test:coverage
+    #  - name: Run coverage report (optional)
+    #    run: npm run test:coverage
