@@ -91,3 +91,5 @@ export const makeUpsertDeviceDeps = (logger: Logger): UpsertDeviceDeps => ({
   deviceUpdatedNotifier: getDeviceUpdatedNotifier(),
   logger,
 });
+
+//For re publishing backend with working observability - temporary change delete after git push
