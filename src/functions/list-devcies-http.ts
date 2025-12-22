@@ -5,7 +5,7 @@ import {
   InvocationContext,
 } from '@azure/functions';
 import { listDevices } from '../app/list-devices';
-import { createListDevicesDeps } from '../config/appServices';
+import { makeListDevicesDeps } from '../config/appServices';
 
 // ✅ CORS headers helper
 const getCorsHeaders = () => ({
@@ -64,7 +64,7 @@ const listDevicesHandler = async (
     context.log('COSMOS_CONTAINER:', COSMOS_CONTAINER);
 
     // Create dependencies and call listDevices
-    const deps = createListDevicesDeps();
+    const deps = makeListDevicesDeps();
     const result = await listDevices(deps);
 
     if (!result.success) {

@@ -5,11 +5,11 @@ import {
   InvocationContext,
 } from '@azure/functions';
 import { upsertDevice } from '../app/upsert-device';
-import { createUpsertDeviceDeps } from '../config/appServices';
+import { makeUpsertDeviceDeps } from '../config/appServices';
 
-// ✅ CORS headers helper
+// CORS helper
 const getCorsHeaders = () => ({
-  'Access-Control-Allow-Origin': '*', // or restrict to http://localhost:5173 if you prefer
+  'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 });
@@ -19,7 +19,7 @@ const upsertDeviceHandler = async (
   context: InvocationContext
 ): Promise<HttpResponseInit> => {
   try {
-    // Handle preflight CORS request
+    // Preflight CORS
     if (request.method === 'OPTIONS') {
       return {
         status: 204,
@@ -29,7 +29,7 @@ const upsertDeviceHandler = async (
 
     const body = (await request.json()) as any;
 
-    // Validate required fields
+    // Validate body
     if (!body || typeof body !== 'object') {
       return {
         status: 400,
@@ -46,6 +46,7 @@ const upsertDeviceHandler = async (
 
     const { id, name, totalQuantity, description } = body;
 
+    // Validate required fields
     if (!id || !name || totalQuantity === undefined || !description) {
       return {
         status: 400,
@@ -61,8 +62,8 @@ const upsertDeviceHandler = async (
       };
     }
 
-    // Create dependencies and call upsertDevice
-    const deps = createUpsertDeviceDeps();
+    // Build dependencies
+    const deps = makeUpsertDeviceDeps(context);
     const result = await upsertDevice(deps, {
       id,
       name,
@@ -92,11 +93,11 @@ const upsertDeviceHandler = async (
         ...getCorsHeaders(),
       },
       jsonBody: {
-        ...result.data, // only id, name, totalQuantity, description
+        ...result.data, // id, name, totalQuantity, description
       },
     };
-  } catch (err) {
-    context.error('Unexpected error in upsertDeviceHttp:', err);
+  } catch (error) {
+    context.error('Unexpected error in upsertDeviceHttp:', error);
     return {
       status: 500,
       headers: {
@@ -105,16 +106,16 @@ const upsertDeviceHandler = async (
       },
       jsonBody: {
         success: false,
-        message: 'Unexpected error',
-        error: (err as Error).message,
+        message: 'Internal server error',
+        error: (error as Error).message,
       },
     };
   }
 };
 
-// Register the function
+// Register function
 app.http('upsertDeviceHttp', {
-  methods: ['PUT', 'POST'], // ✅ include OPTIONS for preflight
+  methods: ['PUT', 'POST', 'OPTIONS'],
   authLevel: 'anonymous',
   route: 'devices/upsert',
   handler: upsertDeviceHandler,
