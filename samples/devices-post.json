@@ -1,5 +1,5 @@
 {
-  "id": "product-123",
+  "id": "product-123456",
   "name": "Example Product",
   "totalQuantity": 1999,
   "description": "This is a sample product for testing the upsert endpoint"
