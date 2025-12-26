@@ -26,7 +26,8 @@ let cachedDeviceUpdatedNotifier: DeviceUpdatedNotifier | null = null;
 
 export const getDeviceUpdatedNotifier = (): DeviceUpdatedNotifier => {
   if (!cachedDeviceUpdatedNotifier) {
-    const baseUrl = process.env.DEVICE_UPDATED_BASE_URL;
+    const baseUrl =
+      'https://browse-test-efix08-devices-topic.uksouth-1.eventgrid.azure.net/api/events';
 
     if (baseUrl && baseUrl.trim() !== '') {
       cachedDeviceUpdatedNotifier = new HttpDeviceUpdatedNotifier({
