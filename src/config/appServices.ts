@@ -20,7 +20,7 @@ const COSMOS_OPTIONS = {
 };
 
 /**
- * Device Updated Notifier (mirrors product file)
+ * Device Updated Notifier
  */
 let cachedDeviceUpdatedNotifier: DeviceUpdatedNotifier | null = null;
 
@@ -56,7 +56,6 @@ export const getDeviceRepo = (): DeviceRepo => {
     if (cosmosConfigured) {
       cachedDeviceRepo = new CosmosDeviceRepo(COSMOS_OPTIONS);
     } else {
-      // Fake repo fallback (mirrors product file)
       const initialDevices: Device[] = [
         {
           id: 'd-001',
@@ -80,7 +79,7 @@ export const getDeviceRepo = (): DeviceRepo => {
 };
 
 /**
- * Dependency factories (matching product file)
+ * Dependency factories (now matching product file)
  */
 export const makeListDevicesDeps = (): ListDevicesDeps => ({
   deviceRepo: getDeviceRepo(),
@@ -91,5 +90,3 @@ export const makeUpsertDeviceDeps = (logger: Logger): UpsertDeviceDeps => ({
   deviceUpdatedNotifier: getDeviceUpdatedNotifier(),
   logger,
 });
-
-//For re publishing backend with working observability - temporary change delete after git push
